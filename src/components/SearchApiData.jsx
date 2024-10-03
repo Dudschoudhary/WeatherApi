@@ -5,7 +5,7 @@ import { useState } from 'react';
 const url = 'https://weatherapi-com.p.rapidapi.com/current.json?'
 const SearchApiData = () => {
     const [record, setRecord] = useState(null)
-    const[input, setInput] = useState('');
+    const [input, setInput] = useState('');
     const fetchData = async (input) => {
         try {
             const response = await axios.get(url, {
@@ -28,25 +28,32 @@ const SearchApiData = () => {
     useEffect(() => {
         fetchData();
     }, [])
-    const searchData = (e) =>{
+    const searchData = (e) => {
         e.preventDefault()
         // console.log(input)
-        fetchData(input)
+        if (input) {
+            fetchData(input)
+        }
     }
     return (
         <>
             <div>SearchApiData</div>
             <form onClick={searchData}>
-                <input type="text" placeholder='search data ' value={input} className='border outline-none px-4 py-1 rounded' onChange={(e)=>setInput(e.target.value)}/><br/>
+                <input type="text" placeholder='search data ' value={input} className='border outline-none px-4 py-1 rounded' onChange={(e) => setInput(e.target.value)} /><br />
                 <button className='btn bg-teal-200 px-2 py-1 rounded my-4 hover:bg-slate-500 '>Submit</button>
             </form>
+            {record ? (
+                <>
+                    <div>Location name:- {record.location.name}</div>
+                    <div>Country Name:- {record.location.country}</div>
+                    <div>Region name:- {record.location.region}</div>
+                    <div>Current Tep:- {record.current.temp_c}</div>
 
-           <div>Location name:- {record.location.name}</div> 
-           <div>Country Name:- {record.location.country}</div> 
-           <div>Region name:- {record.location.region}</div> 
-           <div>Current Tep:- {record.current.temp_c}</div> 
-
-
+                </>
+            )
+                : (
+                    <div>Data Not Fopund</div>
+        )}
         </>
 
     )
